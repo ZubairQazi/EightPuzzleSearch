@@ -33,4 +33,15 @@ def update_queue(nodes, heuristic):
     return []
 
 
+# returns the number of misplaced tiles
+def misplaced_heuristic(node):
+    count = 0
+    for i, row in enumerate(node.puzzle):
+        for j, val in enumerate(row):
+            if val != goal[i][j]:
+                count += 1
+
+    return count
+
+
 main()
