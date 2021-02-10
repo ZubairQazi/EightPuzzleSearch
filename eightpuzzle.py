@@ -7,14 +7,14 @@ goal = [[1, 2, 3],
 
 def main():
     puzzle = [[3, 2, 8],
-              [4, 5, 0],
+              [4, 0, 5],
               [7, 1, 6]]
 
     root = Node(puzzle, 0, 0, [])
-    #search(root, 0)
+    # search(root, 0)
     print_puzzle(root)
     print()
-    print_puzzle(move_up(root))
+    print_puzzle(move_left(root))
 
 
 # general search function
@@ -34,6 +34,11 @@ def search(root: Node, heuristic):
 def update_queue(nodes, heuristic):
     # TODO: Implement queueing function
     return []
+
+
+'''
+HEURISTIC FUNCTIONS
+'''
 
 
 # returns the number of misplaced tiles
@@ -63,15 +68,9 @@ def manhattan_heuristic(node: Node):
     return manhattan_sum
 
 
-# returns index (row, col) of value in puzzle
-def find(puzzle, val):
-    for i, row in enumerate(puzzle):
-        for j, col in enumerate(row):
-            if col == val:
-                return i, j
-
-    # returns -1 if value is not found
-    return -1, -1
+'''
+TILE MOVING FUNCTIONS
+'''
 
 
 def move_up(node: Node):
@@ -101,12 +100,35 @@ def move_down(node: Node):
 
 def move_left(node: Node):
     # TODO: Move blank tile left if applicable
+    r, c = find(node.puzzle, 0)
+    # if not applicable, return null
+    if c == 2:
+        return None
+
+    # swap the blank tile with the one above
+    node.puzzle[r][c], node.puzzle[r][c + 1] = node.puzzle[r][c + 1], node.puzzle[r][c]
+
     return node
 
 
 def move_right(node: Node):
     # TODO: Move blank tile right if applicable
     return node
+
+'''
+HELPER FUNCTIONS
+'''
+
+
+# returns index (row, col) of value in puzzle
+def find(puzzle, val):
+    for i, row in enumerate(puzzle):
+        for j, col in enumerate(row):
+            if col == val:
+                return i, j
+
+    # returns -1 if value is not found
+    return -1, -1
 
 
 # pretty print the node's puzzle
