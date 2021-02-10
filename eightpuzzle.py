@@ -6,9 +6,9 @@ goal = [[1, 2, 3],
 
 
 def main():
-    puzzle = [[1, 2, 3],
+    puzzle = [[3, 2, 8],
               [4, 5, 6],
-              [7, 0, 8]]
+              [7, 1, 0]]
 
     root = Node(puzzle, 0, 0, [])
     search(root, 0)
@@ -34,7 +34,7 @@ def update_queue(nodes, heuristic):
 
 
 # returns the number of misplaced tiles
-def misplaced_heuristic(node):
+def misplaced_heuristic(node: Node):
     misplaced_count = 0
     for i, row in enumerate(node.puzzle):
         for j, val in enumerate(row):
@@ -46,14 +46,14 @@ def misplaced_heuristic(node):
 
 
 # returns the manhattan heuristic evaluation
-def manhattan_heuristic(node):
+def manhattan_heuristic(node: Node):
     manhattan_sum = 0
     for i, row in enumerate(node.puzzle):
         for j, val in enumerate(row):
             # return index of value in goal state
             r, c = find(goal, val)
             # ensures that the value was found in the puzzle
-            if all(v != -1 for v in (r, c)):
+            if all(v != -1 for v in (r, c)) and val != 0:
                 # sums the manhattan distance of each tile
                 manhattan_sum += (abs(r - i) + abs(c - j))
 
