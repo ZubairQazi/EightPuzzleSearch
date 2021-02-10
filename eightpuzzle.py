@@ -35,19 +35,40 @@ def update_queue(nodes, heuristic):
 
 # returns the number of misplaced tiles
 def misplaced_heuristic(node):
-    count = 0
+    misplaced_count = 0
     for i, row in enumerate(node.puzzle):
         for j, val in enumerate(row):
-            if val != goal[i][j]:
-                count += 1
+            # account for the blank tile
+            if val != goal[i][j] and val != 0:
+                misplaced_count += 1
 
-    return count
+    return misplaced_count
 
 
-# returns the
-def manhattan_heuristic(node, val):
-    # TODO: Implement manhattan heuristic
-    return 0
+# returns the manhattan heuristic evaluation
+def manhattan_heuristic(node):
+    manhattan_sum = 0
+    for i, row in enumerate(node.puzzle):
+        for j, val in enumerate(row):
+            # return index of value in goal state
+            r, c = find(goal, val)
+            # ensures that the value was found in the puzzle
+            if all(v != -1 for v in (r, c)):
+                # sums the manhattan distance of each tile
+                manhattan_sum += (abs(r - i) + abs(c - j))
+
+    return manhattan_sum
+
+
+# returns index (row, col) of value in puzzle
+def find(puzzle, val):
+    for i, row in enumerate(puzzle):
+        for j, col in enumerate(row):
+            if col == val:
+                return i, j
+
+    # returns -1 if value is not found
+    return -1, -1
 
 
 def move_up(node):
