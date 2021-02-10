@@ -11,11 +11,14 @@ def main():
               [7, 1, 0]]
 
     root = Node(puzzle, 0, 0, [])
-    search(root, 0)
+    #search(root, 0)
+    print_puzzle(root)
+    print()
+    print_puzzle(move_down(root))
 
 
 # general search function
-def search(root, heuristic):
+def search(root: Node, heuristic):
     nodes = [root]
 
     while len(nodes) != 0:
@@ -71,24 +74,37 @@ def find(puzzle, val):
     return -1, -1
 
 
-def move_up(node):
+def move_up(node: Node):
     # TODO: Move blank tile up if applicable
     return node
 
 
-def move_down(node):
-    # TODO: Move blank tile down if applicable
+def move_down(node: Node):
+    r, c = find(node.puzzle, 0)
+    if r == 0:
+        return None
+
+    # swap the blank tile with the one above
+    node.puzzle[r][c], node.puzzle[r - 1][c] = node.puzzle[r - 1][c], node.puzzle[r][c]
+
     return node
 
 
-def move_left(node):
+def move_left(node: Node):
     # TODO: Move blank tile left if applicable
     return node
 
 
-def move_right(node):
+def move_right(node: Node):
     # TODO: Move blank tile right if applicable
     return node
+
+
+# pretty print the node's puzzle
+def print_puzzle(node: Node):
+    for row in node.puzzle:
+        # print each element in the row separated by space
+        print(' '.join([str(x) for x in row]))
 
 
 main()
