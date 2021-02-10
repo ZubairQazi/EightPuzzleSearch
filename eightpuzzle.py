@@ -7,14 +7,14 @@ goal = [[1, 2, 3],
 
 def main():
     puzzle = [[3, 2, 8],
-              [4, 0, 5],
+              [4, 5, 0],
               [7, 1, 6]]
 
     root = Node(puzzle, 0, 0, [])
     # search(root, 0)
     print_puzzle(root)
     print()
-    print_puzzle(move_left(root))
+    print_puzzle(move_right(root))
 
 
 # general search function
@@ -113,6 +113,14 @@ def move_left(node: Node):
 
 def move_right(node: Node):
     # TODO: Move blank tile right if applicable
+    r, c = find(node.puzzle, 0)
+    # if not applicable, return null
+    if c == 0:
+        return None
+
+    # swap the blank tile with the one above
+    node.puzzle[r][c], node.puzzle[r][c - 1] = node.puzzle[r][c - 1], node.puzzle[r][c]
+
     return node
 
 '''
