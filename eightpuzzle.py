@@ -44,4 +44,30 @@ def misplaced_heuristic(node):
     return count
 
 
+# returns the
+def manhattan_heuristic(node, val):
+    # TODO: Implement manhattan heuristic
+    return 0
+
+
+def move_up(node):
+    # TODO: Move blank tile up if applicable
+    return node
+
+
+def move_down(node):
+    # TODO: Move blank tile down if applicable
+    return node
+
+
+def move_left(node):
+    # TODO: Move blank tile left if applicable
+    return node
+
+
+def move_right(node):
+    # TODO: Move blank tile right if applicable
+    return node
+
+
 main()
