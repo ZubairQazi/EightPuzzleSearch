@@ -3,5 +3,3 @@ class Node:
         self.puzzle = puzzle
         self.cost = cost
         self.depth = depth
-        self.children = children
-
