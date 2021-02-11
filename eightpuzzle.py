@@ -1,9 +1,13 @@
 from node import Node
+
 import copy
 
 goal = [[1, 2, 3],
         [4, 5, 6],
         [7, 8, 0]]
+
+# stores seen puzzles to avoid duplicates
+seen = []
 
 
 def main():
@@ -30,8 +34,13 @@ def search(root: Node, heuristic):
         node = nodes.pop(0)
         if node.puzzle == goal:
             return node
+
+        # Output node at the front of the queue
+        print('Expanding Node:')
         print_puzzle(node)
         print()
+
+        # Update the queue
         nodes = update_queue(node, nodes, heuristic)
         expansion_count += 1
 
@@ -39,8 +48,12 @@ def search(root: Node, heuristic):
     return None
 
 
+# Expand the node and update the queue
 def update_queue(node, nodes, heuristic):
     # TODO: Test queueing function
+
+    # stores seen puzzles to avoid duplicates
+    global seen
 
     # add children of node to queue
     child1 = copy.deepcopy(node)
@@ -56,7 +69,10 @@ def update_queue(node, nodes, heuristic):
         # manhattan distance
         if heuristic == '3':
             child1.cost = child1.depth + manhattan_heuristic(child1)
-        nodes.append(child1)
+
+        if child1.puzzle not in seen:
+            nodes.append(child1)
+            seen.append(child1.puzzle)
 
     child2 = copy.deepcopy(node)
     child2 = move_down(child2)
@@ -71,7 +87,10 @@ def update_queue(node, nodes, heuristic):
         # manhattan distance
         if heuristic == '3':
             child2.cost = child2.depth + manhattan_heuristic(child2)
-        nodes.append(child2)
+
+        if child2.puzzle not in seen:
+            nodes.append(child2)
+            seen.append(child2.puzzle)
 
     child3 = copy.deepcopy(node)
     child3 = move_left(child3)
@@ -86,7 +105,10 @@ def update_queue(node, nodes, heuristic):
         # manhattan distance
         if heuristic == '3':
             child3.cost = child3.depth + manhattan_heuristic(child3)
-        nodes.append(child3)
+
+        if child3.puzzle not in seen:
+            nodes.append(child3)
+            seen.append(child3.puzzle)
 
     child4 = copy.deepcopy(node)
     child4 = move_right(child4)
@@ -101,10 +123,14 @@ def update_queue(node, nodes, heuristic):
         # manhattan distance
         if heuristic == '3':
             child4.cost = child4.depth + manhattan_heuristic(child4)
-        nodes.append(child4)
 
-    # sort the list based on the cost
+        if child4.puzzle not in seen:
+            nodes.append(child4)
+            seen.append(child4.puzzle)
+
+    # sort the list based on the cost g(n) + h(n)
     nodes = sorted(nodes, key=lambda n: n.cost)
+
     return nodes
 
 
