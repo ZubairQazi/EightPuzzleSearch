@@ -15,7 +15,7 @@ def main():
 
     puzzle, heuristic = print_menu()
 
-    root = Node(puzzle, 0, 0, [])
+    root = Node(puzzle, 0, 0)
 
     print('Expanding state')
     print_puzzle(root)
