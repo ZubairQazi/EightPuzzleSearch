@@ -1,4 +1,5 @@
 from node import Node
+import copy
 
 goal = [[1, 2, 3],
         [4, 5, 6],
@@ -6,15 +7,17 @@ goal = [[1, 2, 3],
 
 
 def main():
-    puzzle = [[3, 2, 8],
-              [4, 5, 0],
-              [7, 1, 6]]
+    puzzle = [[1, 2, 3],
+              [5, 0, 6],
+              [4, 7, 8]]
 
     root = Node(puzzle, 0, 0, [])
-    # search(root, 0)
-    print_puzzle(root)
-    print()
-    print_puzzle(move_right(root))
+    heuristic = input('Enter Heuristic: ')
+    result = search(root, heuristic)
+    if result is not None:
+        print('Solution found at depth: ', result.depth)
+    else:
+        print('No solution found')
 
 
 # general search function
@@ -23,17 +26,83 @@ def search(root: Node, heuristic):
 
     while len(nodes) != 0:
         node = nodes.pop(0)
-        if node == goal:
+        if node.puzzle == goal:
             return node
-        nodes = update_queue(nodes, heuristic)
+        print_puzzle(node)
+        print()
+        nodes = update_queue(node, nodes, heuristic)
 
     print('No solution found')
-    return -1
+    return None
 
 
-def update_queue(nodes, heuristic):
+def update_queue(node, nodes, heuristic):
     # TODO: Implement queueing function
-    return []
+
+    # add children of node to queue
+    child1 = copy.deepcopy(node)
+    child1 = move_up(child1)
+    if child1 is not None:
+        child1.depth = node.depth + 1
+        # uniform cost
+        if heuristic == 0:
+            child1.cost = child1.depth + 0
+        # misplaced tile
+        if heuristic == 1:
+            child1.cost = child1.depth + misplaced_heuristic(child1)
+        # manhattan distance
+        if heuristic == 2:
+            child1.cost = child1.depth + manhattan_heuristic(child1)
+        nodes.append(child1)
+
+    child2 = copy.deepcopy(node)
+    child2 = move_down(child2)
+    if child2 is not None:
+        child2.depth = node.depth + 1
+        # uniform cost
+        if heuristic == 0:
+            child2.cost = child2.depth + 0
+        # misplaced tile
+        if heuristic == 1:
+            child2.cost = child2.depth + misplaced_heuristic(child2)
+        # manhattan distance
+        if heuristic == 2:
+            child2.cost = child2.depth + manhattan_heuristic(child2)
+        nodes.append(child2)
+
+    child3 = copy.deepcopy(node)
+    child3 = move_left(child3)
+    if child3 is not None:
+        child3.depth = node.depth + 1
+        # uniform cost
+        if heuristic == 0:
+            child3.cost = child3.depth + 0
+        # misplaced tile
+        if heuristic == 1:
+            child3.cost = child3.depth + misplaced_heuristic(child3)
+        # manhattan distance
+        if heuristic == 2:
+            child3.cost = child3.depth + manhattan_heuristic(child3)
+        nodes.append(child3)
+
+    child4 = copy.deepcopy(node)
+    child4 = move_left(child4)
+    if child4 is not None:
+        child4.depth = node.depth + 1
+        # uniform cost
+        if heuristic == 0:
+            child4.cost = child4.depth + 0
+        # misplaced tile
+        if heuristic == 1:
+            child4.cost = child4.depth + misplaced_heuristic(child4)
+        # manhattan distance
+        if heuristic == 2:
+            child4.cost = child4.depth + manhattan_heuristic(child4)
+        nodes.append(child4)
+
+    # sort the list based on the cost
+    nodes = sorted(nodes, key=lambda n: n.cost)
+    return nodes
 
 
 '''
@@ -74,7 +143,6 @@ TILE MOVING FUNCTIONS
 
 
 def move_up(node: Node):
-    # TODO: Move blank tile up if applicable
     r, c = find(node.puzzle, 0)
     # if not applicable, return null
     if r == 2:
