@@ -18,11 +18,15 @@ def main():
     puzzle, heuristic = print_menu()
 
     root = Node(puzzle, 0, 0, [])
+
+    print('Expanding state')
+    print_puzzle(root)
+
     result = search(root, heuristic)
     if result is not None:
         print('Solution found at depth: ', result.depth)
     else:
-        print('No solution found')
+        print('No solution found after 50000 expansions')
 
 
 # general search function
@@ -36,9 +40,9 @@ def search(root: Node, heuristic):
             return node
 
         # Output node at the front of the queue
-        print('Expanding Node:')
-        print_puzzle(node)
-        print()
+        # print('Expanding Node:')
+        # print_puzzle(node)
+        # print()
 
         # Update the queue
         nodes = update_queue(node, nodes, heuristic)
@@ -48,9 +52,8 @@ def search(root: Node, heuristic):
     return None
 
 
-# Expand the node and update the queue
+# Expand the node and update the queue(nodes)
 def update_queue(node, nodes, heuristic):
-    # TODO: Test queueing function
 
     # stores seen puzzles to avoid duplicates
     global seen
@@ -70,9 +73,10 @@ def update_queue(node, nodes, heuristic):
         if heuristic == '3':
             child1.cost = child1.depth + manhattan_heuristic(child1)
 
-        if child1.puzzle not in seen:
+        # check if the same cost & puzzle have been seen before
+        if (child1.cost, child1.puzzle) not in seen:
             nodes.append(child1)
-            seen.append(child1.puzzle)
+            seen.append((child1.cost, child1.puzzle))
 
     child2 = copy.deepcopy(node)
     child2 = move_down(child2)
@@ -88,9 +92,9 @@ def update_queue(node, nodes, heuristic):
         if heuristic == '3':
             child2.cost = child2.depth + manhattan_heuristic(child2)
 
-        if child2.puzzle not in seen:
+        if (child2.cost, child2.puzzle) not in seen:
             nodes.append(child2)
-            seen.append(child2.puzzle)
+            seen.append((child2.cost, child2.puzzle))
 
     child3 = copy.deepcopy(node)
     child3 = move_left(child3)
@@ -106,9 +110,9 @@ def update_queue(node, nodes, heuristic):
         if heuristic == '3':
             child3.cost = child3.depth + manhattan_heuristic(child3)
 
-        if child3.puzzle not in seen:
+        if (child3.cost, child3.puzzle) not in seen:
             nodes.append(child3)
-            seen.append(child3.puzzle)
+            seen.append((child3.cost, child3.puzzle))
 
     child4 = copy.deepcopy(node)
     child4 = move_right(child4)
@@ -124,12 +128,17 @@ def update_queue(node, nodes, heuristic):
         if heuristic == '3':
             child4.cost = child4.depth + manhattan_heuristic(child4)
 
-        if child4.puzzle not in seen:
+        if (child4.cost, child4.puzzle) not in seen:
             nodes.append(child4)
-            seen.append(child4.puzzle)
+            seen.append((child4.cost, child4.puzzle))
 
     # sort the list based on the cost g(n) + h(n)
     nodes = sorted(nodes, key=lambda n: n.cost)
+
+    # output the node to be expanded in the next iterations cost and puzzle
+    print(f'We are expanding with g(n) = {nodes[0].depth} and f(n) = {nodes[0].cost - nodes[0].depth}')
+    print_puzzle(nodes[0])
+    print()
 
     return nodes
 
@@ -196,7 +205,6 @@ def move_down(node: Node):
 
 
 def move_left(node: Node):
-    # TODO: Move blank tile left if applicable
     r, c = find(node.puzzle, 0)
     # if not applicable, return null
     if c == 2:
@@ -209,7 +217,6 @@ def move_left(node: Node):
 
 
 def move_right(node: Node):
-    # TODO: Move blank tile right if applicable
     r, c = find(node.puzzle, 0)
     # if not applicable, return null
     if c == 0:
