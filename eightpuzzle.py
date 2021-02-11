@@ -7,12 +7,13 @@ goal = [[1, 2, 3],
 
 
 def main():
-    puzzle = [[1, 2, 3],
-              [5, 0, 6],
-              [4, 7, 8]]
+    default_puzzle = [[1, 2, 3],
+                      [4, 5, 6],
+                      [7, 0, 8]]
 
-    root = Node(puzzle, 0, 0, [])
-    heuristic = input('Enter Heuristic: ')
+    puzzle, heuristic = print_menu()
+
+    root = Node(default_puzzle, 0, 0, [])
     result = search(root, heuristic)
     if result is not None:
         print('Solution found at depth: ', result.depth)
@@ -193,6 +194,7 @@ def move_right(node: Node):
 
     return node
 
+
 '''
 HELPER FUNCTIONS
 '''
@@ -214,6 +216,29 @@ def print_puzzle(node: Node):
     for row in node.puzzle:
         # print each element in the row separated by space
         print(' '.join([str(x) for x in row]))
+
+
+def print_menu():
+    puzzle = []
+
+    print('Welcome to Zubair\'s 8-puzzle solver')
+    print('Enter the puzzle, use a zero for the blank')
+
+    puzzle.append((input('Enter the first row, separate with spaces: ')).split(' '))
+    puzzle.append((input('Enter the second row, separate with spaces: ')).split(' '))
+    puzzle.append((input('Enter the third row, separate with spaces: ')).split(' '))
+
+    # convert each element in the puzzle to an integer
+    puzzle = [[int(val) for val in row] for row in puzzle]
+
+    print('\nEnter the desired algorithm')
+    print('\t1. Uniform Cost Search')
+    print('\t2. A* with Misplaced Tile')
+    print('\t3. A* with Manhattan Distance\n')
+
+    heuristic = input()
+
+    return puzzle, heuristic
 
 
 main()
