@@ -57,78 +57,86 @@ def update_queue(node, nodes, heuristic):
     global seen
 
     # add children of node to queue
-    child1 = copy.deepcopy(node)
-    child1 = move_up(child1)
-    if child1 is not None:
-        child1.depth = node.depth + 1
+
+    child = copy.deepcopy(node)
+    # first expansion
+    child = move_up(child)
+    if child is not None:
+        child.depth = node.depth + 1
         # uniform cost
         if heuristic == '1':
-            child1.cost = child1.depth + 0
+            child.cost = child.depth + 0
         # misplaced tile
         if heuristic == '2':
-            child1.cost = child1.depth + misplaced_heuristic(child1)
+            child.cost = child.depth + misplaced_heuristic(child)
         # manhattan distance
         if heuristic == '3':
-            child1.cost = child1.depth + manhattan_heuristic(child1)
+            child.cost = child.depth + manhattan_heuristic(child)
 
         # check if the same cost & puzzle have been seen before
-        if (child1.cost, child1.puzzle) not in seen:
-            nodes.append(child1)
-            seen.append((child1.cost, child1.puzzle))
+        if (child.cost, child.puzzle) not in seen:
+            nodes.append(child)
+            seen.append((child.cost, child.puzzle))
 
-    child2 = copy.deepcopy(node)
-    child2 = move_down(child2)
-    if child2 is not None:
-        child2.depth = node.depth + 1
+    child = copy.deepcopy(node)
+    # second expansion
+    child = move_down(child)
+    if child is not None:
+        child.depth = node.depth + 1
         # uniform cost
         if heuristic == '1':
-            child2.cost = child2.depth + 0
+            child.cost = child.depth + 0
         # misplaced tile
         if heuristic == '2':
-            child2.cost = child2.depth + misplaced_heuristic(child2)
+            child.cost = child.depth + misplaced_heuristic(child)
         # manhattan distance
         if heuristic == '3':
-            child2.cost = child2.depth + manhattan_heuristic(child2)
+            child.cost = child.depth + manhattan_heuristic(child)
 
-        if (child2.cost, child2.puzzle) not in seen:
-            nodes.append(child2)
-            seen.append((child2.cost, child2.puzzle))
+        # check if the same cost & puzzle have been seen before
+        if (child.cost, child.puzzle) not in seen:
+            nodes.append(child)
+            seen.append((child.cost, child.puzzle))
 
-    child3 = copy.deepcopy(node)
-    child3 = move_left(child3)
-    if child3 is not None:
-        child3.depth = node.depth + 1
+    child = copy.deepcopy(node)
+    # third expansion
+    child = move_left(child)
+    if child is not None:
+        child.depth = node.depth + 1
         # uniform cost
         if heuristic == '1':
-            child3.cost = child3.depth + 0
+            child.cost = child.depth + 0
         # misplaced tile
         if heuristic == '2':
-            child3.cost = child3.depth + misplaced_heuristic(child3)
+            child.cost = child.depth + misplaced_heuristic(child)
         # manhattan distance
         if heuristic == '3':
-            child3.cost = child3.depth + manhattan_heuristic(child3)
+            child.cost = child.depth + manhattan_heuristic(child)
 
-        if (child3.cost, child3.puzzle) not in seen:
-            nodes.append(child3)
-            seen.append((child3.cost, child3.puzzle))
+        # check if the same cost & puzzle have been seen before
+        if (child.cost, child.puzzle) not in seen:
+            nodes.append(child)
+            seen.append((child.cost, child.puzzle))
 
-    child4 = copy.deepcopy(node)
-    child4 = move_right(child4)
-    if child4 is not None:
-        child4.depth = node.depth + 1
+    child = copy.deepcopy(node)
+    # fourth expansion
+    child = move_right(child)
+    if child is not None:
+        child.depth = node.depth + 1
         # uniform cost
         if heuristic == '1':
-            child4.cost = child4.depth + 0
+            child.cost = child.depth + 0
         # misplaced tile
         if heuristic == '2':
-            child4.cost = child4.depth + misplaced_heuristic(child4)
+            child.cost = child.depth + misplaced_heuristic(child)
         # manhattan distance
         if heuristic == '3':
-            child4.cost = child4.depth + manhattan_heuristic(child4)
+            child.cost = child.depth + manhattan_heuristic(child)
 
-        if (child4.cost, child4.puzzle) not in seen:
-            nodes.append(child4)
-            seen.append((child4.cost, child4.puzzle))
+        # check if the same cost & puzzle have been seen before
+        if (child.cost, child.puzzle) not in seen:
+            nodes.append(child)
+            seen.append((child.cost, child.puzzle))
 
     # sort the list based on the cost g(n) + h(n)
     nodes = sorted(nodes, key=lambda n: n.cost)
