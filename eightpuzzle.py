@@ -1,11 +1,9 @@
-from node import Node
-
 import copy
+from node import Node
 
 goal = [[1, 2, 3],
         [4, 5, 6],
         [7, 8, 0]]
-
 # stores seen puzzles to avoid duplicates
 seen = []
 
@@ -32,21 +30,21 @@ def main():
 # general search function
 def search(root: Node, heuristic):
     nodes = [root]
-    expansion_count = 0
+    expansion_count = max_nodes = 0
 
     while len(nodes) != 0 and expansion_count < 50000:
         node = nodes.pop(0)
         if node.puzzle == goal:
+            print('Nodes expanded:', expansion_count)
+            print('Max number of nodes in queue: ', max_nodes)
             return node
 
-        # Output node at the front of the queue
-        # print('Expanding Node:')
-        # print_puzzle(node)
-        # print()
-
-        # Update the queue
+        # update the queue
         nodes = update_queue(node, nodes, heuristic)
+        # update counters
         expansion_count += 1
+        if len(nodes) > max_nodes:
+            max_nodes = len(nodes)
 
     print('No solution found')
     return None
@@ -136,7 +134,7 @@ def update_queue(node, nodes, heuristic):
     nodes = sorted(nodes, key=lambda n: n.cost)
 
     # output the node to be expanded in the next iterations cost and puzzle
-    print(f'We are expanding with g(n) = {nodes[0].depth} and f(n) = {nodes[0].cost - nodes[0].depth}')
+    print(f'We are expanding state with g(n) = {nodes[0].depth} and f(n) = {nodes[0].cost - nodes[0].depth}')
     print_puzzle(nodes[0])
     print()
 
@@ -255,7 +253,7 @@ def print_menu():
     puzzle = []
 
     print('Welcome to Zubair\'s 8-puzzle solver')
-    print('Enter the puzzle, use a zero for the blank')
+    print('Enter your puzzle, use a zero for the blank')
 
     puzzle.append((input('Enter the first row, separate with spaces: ')).split(' '))
     puzzle.append((input('Enter the second row, separate with spaces: ')).split(' '))
