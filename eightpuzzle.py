@@ -13,7 +13,7 @@ def main():
 
     puzzle, heuristic = print_menu()
 
-    root = Node(default_puzzle, 0, 0, [])
+    root = Node(puzzle, 0, 0, [])
     result = search(root, heuristic)
     if result is not None:
         print('Solution found at depth: ', result.depth)
@@ -48,13 +48,13 @@ def update_queue(node, nodes, heuristic):
     if child1 is not None:
         child1.depth = node.depth + 1
         # uniform cost
-        if heuristic == '0':
+        if heuristic == '1':
             child1.cost = child1.depth + 0
         # misplaced tile
-        if heuristic == '1':
+        if heuristic == '2':
             child1.cost = child1.depth + misplaced_heuristic(child1)
         # manhattan distance
-        if heuristic == '2':
+        if heuristic == '3':
             child1.cost = child1.depth + manhattan_heuristic(child1)
         nodes.append(child1)
 
@@ -63,13 +63,13 @@ def update_queue(node, nodes, heuristic):
     if child2 is not None:
         child2.depth = node.depth + 1
         # uniform cost
-        if heuristic == '0':
+        if heuristic == '1':
             child2.cost = child2.depth + 0
         # misplaced tile
-        if heuristic == '1':
+        if heuristic == '2':
             child2.cost = child2.depth + misplaced_heuristic(child2)
         # manhattan distance
-        if heuristic == '2':
+        if heuristic == '3':
             child2.cost = child2.depth + manhattan_heuristic(child2)
         nodes.append(child2)
 
@@ -78,13 +78,13 @@ def update_queue(node, nodes, heuristic):
     if child3 is not None:
         child3.depth = node.depth + 1
         # uniform cost
-        if heuristic == '0':
+        if heuristic == '1':
             child3.cost = child3.depth + 0
         # misplaced tile
-        if heuristic == '1':
+        if heuristic == '2':
             child3.cost = child3.depth + misplaced_heuristic(child3)
         # manhattan distance
-        if heuristic == '2':
+        if heuristic == '3':
             child3.cost = child3.depth + manhattan_heuristic(child3)
         nodes.append(child3)
 
@@ -93,13 +93,13 @@ def update_queue(node, nodes, heuristic):
     if child4 is not None:
         child4.depth = node.depth + 1
         # uniform cost
-        if heuristic == '0':
+        if heuristic == '1':
             child4.cost = child4.depth + 0
         # misplaced tile
-        if heuristic == '1':
+        if heuristic == '2':
             child4.cost = child4.depth + misplaced_heuristic(child4)
         # manhattan distance
-        if heuristic == '2':
+        if heuristic == '3':
             child4.cost = child4.depth + manhattan_heuristic(child4)
         nodes.append(child4)
 
