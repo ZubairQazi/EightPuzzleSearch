@@ -160,7 +160,7 @@ def misplaced_heuristic(node: Node):
     for i, row in enumerate(node.puzzle):
         for j, val in enumerate(row):
             # account for the blank tile
-            if val != goal[i][j] and val != 0:
+            if val != goal[i][j] and all(v != len(row) for v in (i, j)):
                 misplaced_count += 1
 
     return misplaced_count
