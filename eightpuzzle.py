@@ -139,7 +139,7 @@ def update_queue(node, nodes, heuristic):
             seen.append((child.cost, child.puzzle))
 
     # sort the list based on the cost g(n) + h(n)
-    nodes = sorted(nodes, key=lambda n: n.cost)
+    nodes = sorted(nodes, key=lambda n: (n.cost, n.depth))
 
     # output the node to be expanded in the next iterations cost and puzzle
     print(f'We are expanding state with g(n) = {nodes[0].depth} and f(n) = {nodes[0].cost - nodes[0].depth}')
